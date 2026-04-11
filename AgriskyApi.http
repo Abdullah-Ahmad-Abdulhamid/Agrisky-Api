@@ -1,0 +1,6 @@
+@AgriskyApi_HostAddress = http://localhost:5277
+
+GET {{AgriskyApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
