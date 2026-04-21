@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Text.Json;
 
 namespace AgriskyApi.Middleware
 {
@@ -20,10 +19,16 @@ namespace AgriskyApi.Middleware
             {
                 await _next(context);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                _logger.LogError(ex, "Unhandled exception occurred");
-                await HandleExceptionAsync(context, ex);
+                // Log FULL exception details server-side, including stack trace
+                _logger.LogError(exception,
+                    "Unhandled exception on {Method} {Path} — TraceId: {TraceId}",
+                    context.Request.Method,
+                    context.Request.Path,
+                    context.TraceIdentifier);
+
+                await HandleExceptionAsync(context, exception);
             }
         }
 
@@ -31,34 +36,26 @@ namespace AgriskyApi.Middleware
         {
             context.Response.ContentType = "application/json";
 
-            var response = new
+            // Map specific known exception types to appropriate HTTP codes
+            context.Response.StatusCode = exception switch
             {
-                message = "An unexpected error occurred.",
-                detail = exception.Message,
-                timestamp = DateTime.UtcNow
+                InvalidOperationException => (int)HttpStatusCode.BadRequest,
+                UnauthorizedAccessException => (int)HttpStatusCode.Forbidden,
+                KeyNotFoundException => (int)HttpStatusCode.NotFound,
+                _ => (int)HttpStatusCode.InternalServerError
             };
 
-            switch (exception)
+            var response = new
             {
-                case ArgumentNullException:
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    response = new { message = "Invalid argument provided.", detail = exception.Message, timestamp = DateTime.UtcNow };
-                    break;
+                // ── NEVER expose exception.Message, stack trace, or internal details ──
+                // The full exception is logged server-side via ILogger above.
+                message = context.Response.StatusCode == (int)HttpStatusCode.InternalServerError
+                    ? "An unexpected error occurred. Please try again later."
+                    : exception.Message,
 
-                case UnauthorizedAccessException:
-                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    response = new { message = "Unauthorized access.", detail = exception.Message, timestamp = DateTime.UtcNow };
-                    break;
-
-                case InvalidOperationException:
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    response = new { message = "Invalid operation.", detail = exception.Message, timestamp = DateTime.UtcNow };
-                    break;
-
-                default:
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    break;
-            }
+                // traceId is safe — it is just a correlation ID, not implementation detail
+                traceId = context.TraceIdentifier
+            };
 
             return context.Response.WriteAsJsonAsync(response);
         }
