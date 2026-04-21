@@ -69,7 +69,7 @@ dotnet run
 🔑 Default Credentials (Seed Data)
 Upon first run, the database is seeded with an administrative account:
 
-Email: admin@agrisky.app
+Email: omar.0523025@gmail.com
 
 Password: Admin@AgriSky2024 (Please change this after first login)
 
