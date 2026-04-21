@@ -2,6 +2,7 @@
 using AgriskyApi.IRepo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AgriskyApi.Controllers
 {
@@ -11,12 +12,15 @@ namespace AgriskyApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserRepo _repo;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserRepo repo)
+        public UserController(IUserRepo repo, ILogger<UserController> logger)
         {
             _repo = repo;
+            _logger = logger;
         }
 
+        // ── GET /api/user/products — public ───────────────────────────────────
         [AllowAnonymous]
         [HttpGet("products")]
         public async Task<IActionResult> GetProducts(int? categoryId, string? search)
@@ -25,36 +29,85 @@ namespace AgriskyApi.Controllers
             return Ok(data);
         }
 
-        [HttpPost("add-to-cart/{userId}")]
-        public async Task<IActionResult> AddToCart(int userId, AddToCartDto dto)
+        // ── GET /api/user/cart — JWT-based ────────────────────────────────────
+        [HttpGet("cart")]
+        public async Task<IActionResult> GetCart()
         {
-            var result = await _repo.AddToCart(userId, dto);
-            if (!result) return BadRequest(new { message = "Error adding to cart (Check stock or product ID)" });
+            var userId = GetAuthenticatedUserId();
+            if (userId == null) return Unauthorized(new { message = "Invalid token." });
 
-            return Ok(new { message = "Item added to cart successfully" });
-        }
+            var user = await _repo.GetUserByIdAsync(userId.Value);
+            if (user == null || !user.IsActive)
+                return Unauthorized(new { message = "User not found or inactive." });
 
-        [HttpGet("cart/{userId}")]
-        public async Task<IActionResult> GetCart(int userId)
-        {
-            var data = await _repo.GetCart(userId);
+            var data = await _repo.GetCart(userId.Value);
+
+            _logger.LogInformation("User {UserId} accessed cart", userId.Value);
             return Ok(data);
         }
 
+        // ── POST /api/user/add-to-cart — JWT-based ───────────────────────────
+        // NOTE: The old [HttpPost("add-to-cart/{userId}")] route is DELETED.
+        //       UserId is ALWAYS derived from the JWT — never from the URL.
+        [HttpPost("add-to-cart")]
+        public async Task<IActionResult> AddToCart([FromBody] AddToCartDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var userId = GetAuthenticatedUserId();
+            if (userId == null) return Unauthorized(new { message = "Invalid token." });
+
+            var result = await _repo.AddToCart(userId.Value, dto);
+            if (!result)
+                return BadRequest(new
+                {
+                    message = "Failed to add item. Check product ID or available stock."
+                });
+
+            return Ok(new { message = "Item added to cart." });
+        }
+
+        // ── GET /api/user/orders — JWT-based ─────────────────────────────────
+        // NOTE: The old [HttpGet("orders/{userId}")] route is DELETED.
+        //       It was a critical IDOR vulnerability — any user could read any
+        //       other user's orders by changing the ID in the URL.
+        [HttpGet("orders")]
+        public async Task<IActionResult> Orders()
+        {
+            var userId = GetAuthenticatedUserId();
+            if (userId == null) return Unauthorized(new { message = "Invalid token." });
+
+            var user = await _repo.GetUserByIdAsync(userId.Value);
+            if (user == null || !user.IsActive)
+                return Unauthorized(new { message = "User not found or inactive." });
+
+            var data = await _repo.GetUserOrders(userId.Value);
+
+            _logger.LogInformation("User {UserId} accessed orders", userId.Value);
+            return Ok(data);
+        }
+
+        // ── POST /api/user/contact — public ──────────────────────────────────
         [AllowAnonymous]
         [HttpPost("contact")]
-        public async Task<IActionResult> Contact(ContactDto dto)
+        public async Task<IActionResult> Contact([FromBody] ContactDto dto)
         {
-            await _repo.SendMessage(dto);
-            return Ok(new { message = "Message sent successfully" });
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var success = await _repo.SendMessage(dto);
+            if (!success)
+                return BadRequest(new { message = "Failed to send message." });
+
+            return Ok(new { message = "Message sent successfully." });
         }
 
-        // --- عمليات الطلبات (تحتاج تسجيل دخول) ---
-        [HttpGet("orders/{userId}")]
-        public async Task<IActionResult> Orders(int userId)
+        // ── Helper: safely parse authenticated user ID from JWT ───────────────
+        private int? GetAuthenticatedUserId()
         {
-            var data = await _repo.GetUserOrders(userId);
-            return Ok(data);
+            var claim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return int.TryParse(claim, out var id) ? id : null;
         }
     }
 }

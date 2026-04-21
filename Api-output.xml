@@ -1,0 +1,5064 @@
+This file is a merged representation of a subset of the codebase, containing specifically included files, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Only files matching these patterns are included: **/*.cshtml, **/*.css, **/*.js, **/*.cs
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+Controllers/AuthController.cs
+Controllers/OrderController.cs
+Controllers/OwnerController.cs
+Controllers/ProductController.cs
+Controllers/UserController.cs
+Data/Models/AppDbcontext.cs
+Data/Models/AuthResponse.cs
+Data/Models/Cart.cs
+Data/Models/CartItem.cs
+Data/Models/Category.cs
+Data/Models/ContactMessage.cs
+Data/Models/EmailHelper.cs
+Data/Models/ErrorViewModel.cs
+Data/Models/Feedback.cs
+Data/Models/ForgotPasswordViewModel.cs
+Data/Models/LoginModel.cs
+Data/Models/Order.cs
+Data/Models/OrderItem.cs
+Data/Models/Owner.cs
+Data/Models/Payment.cs
+Data/Models/Product.cs
+Data/Models/ProductImage.cs
+Data/Models/ProductWithQuantity.cs
+Data/Models/RegisterModel.cs
+Data/Models/SessionExtensions.cs
+Data/Models/Shipping.cs
+Data/Models/User.cs
+Dtos/OrderDto.cs
+Dtos/OwnerDto.cs
+Dtos/ProductDto.cs
+Dtos/UserDto.cs
+IRepo/IGenricRepo.cs
+IRepo/IOrderRepo.cs
+IRepo/IOwnerRepo.cs
+IRepo/IProductRepo.cs
+IRepo/IUserRepo.cs
+Migrations/20260411162936_init.cs
+Migrations/20260411162936_init.Designer.cs
+Migrations/20260412210935_Addgoogleauthfields.cs
+Migrations/20260412210935_Addgoogleauthfields.Designer.cs
+Migrations/AppDbcontextModelSnapshot.cs
+obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+obj/Debug/net8.0/AgriskyApi.AssemblyInfo.cs
+obj/Debug/net8.0/AgriskyApi.GlobalUsings.g.cs
+obj/Debug/net8.0/AgriskyApi.MvcApplicationPartsAssemblyInfo.cs
+Program.cs
+Repo/GenricRepo.cs
+Repo/OrderRepo.cs
+Repo/OwnerRepo.cs
+Repo/ProductRepo.cs
+Repo/UserRepo.cs
+Services/IJwtServices.cs
+Services/Implementation/JwtServices.cs
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="Migrations/20260412210935_Addgoogleauthfields.cs">
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace AgriskyApi.Migrations
+{
+    /// <inheritdoc />
+    public partial class Addgoogleauthfields : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<string>(
+                name: "PasswordHash",
+                table: "Users",
+                type: "nvarchar(max)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
+            migrationBuilder.AddColumn<string>(
+                name: "GoogleId",
+                table: "Users",
+                type: "nvarchar(max)",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "ProfilePicture",
+                table: "Users",
+                type: "nvarchar(max)",
+                nullable: true);
+
+            migrationBuilder.UpdateData(
+                table: "Users",
+                keyColumn: "Id",
+                keyValue: 1,
+                columns: new[] { "GoogleId", "PasswordHash", "ProfilePicture" },
+                values: new object[] { null, "$2a$11$DgpvHxNvNM.RxfxQUsV/gOnCvcAPwVTsKKn2Zz.QogGfvJbHmuzPG", null });
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "GoogleId",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "ProfilePicture",
+                table: "Users");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "PasswordHash",
+                table: "Users",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: true);
+
+            migrationBuilder.UpdateData(
+                table: "Users",
+                keyColumn: "Id",
+                keyValue: 1,
+                column: "PasswordHash",
+                value: "$2a$11$ZSMH/KHNG2F.O55EG4jHAefGOYJ2sS.ii1oKldTEaoM7P1o9nFTfq");
+        }
+    }
+}
+</file>
+
+<file path="Migrations/20260412210935_Addgoogleauthfields.Designer.cs">
+// <auto-generated />
+using System;
+using Agrisky.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+
+#nullable disable
+
+namespace AgriskyApi.Migrations
+{
+    [DbContext(typeof(AppDbcontext))]
+    [Migration("20260412210935_Addgoogleauthfields")]
+    partial class Addgoogleauthfields
+    {
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        {
+#pragma warning disable 612, 618
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Agrisky.Models.Cart", b =>
+                {
+                    b.Property<int>("CartId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.CartItem", b =>
+                {
+                    b.Property<int>("CartItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemId"));
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartItemId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("CartId", "ProductId")
+                        .IsUnique();
+
+                    b.ToTable("CartItems");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryID"));
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("CategoryID");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            Icon = "bi-flower1",
+                            Name = "Crops"
+                        },
+                        new
+                        {
+                            CategoryID = 2,
+                            Icon = "fa-solid fa-apple-whole",
+                            Name = "Fruits & Vegetables"
+                        },
+                        new
+                        {
+                            CategoryID = 3,
+                            Icon = "fa-solid fa-seedling",
+                            Name = "Seeds"
+                        },
+                        new
+                        {
+                            CategoryID = 4,
+                            Icon = "bi-bug",
+                            Name = "Pesticides"
+                        },
+                        new
+                        {
+                            CategoryID = 5,
+                            Icon = "bi-tools",
+                            Name = "Tools"
+                        },
+                        new
+                        {
+                            CategoryID = 6,
+                            Icon = "bi-cpu",
+                            Name = "Smart Agri"
+                        },
+                        new
+                        {
+                            CategoryID = 7,
+                            Icon = "bi-truck",
+                            Name = "Services"
+                        });
+                });
+
+            modelBuilder.Entity("Agrisky.Models.ContactMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSeenByAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("OwnerID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerID");
+
+                    b.ToTable("ContactMessages");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Feedback", b =>
+                {
+                    b.Property<int>("FeedbackID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeedbackID"));
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateSubmitted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("FeedbackID");
+
+                    b.HasIndex("ProductID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Feedbacks");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Order", b =>
+                {
+                    b.Property<int>("OrderID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeliveredSeen")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSeenByAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSeenByUser")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ShippingID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderID");
+
+                    b.HasIndex("ShippingID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.OrderItem", b =>
+                {
+                    b.Property<int>("OrderItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemID"));
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderItemID");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Owner", b =>
+                {
+                    b.Property<int>("OwnerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OwnerID"));
+
+                    b.Property<string>("BestSellingProduct")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BestSellingQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CancelledOrdersCount")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalSalesMonth")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalSalesToday")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TotalSoldProducts")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WorstSellingProduct")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WorstSellingQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("OwnerID");
+
+                    b.ToTable("Owners");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Payment", b =>
+                {
+                    b.Property<int>("PaymentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"));
+
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProofImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PaymentID");
+
+                    b.HasIndex("OrderID")
+                        .IsUnique();
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Product", b =>
+                {
+                    b.Property<int>("ProductID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductID"));
+
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("StockQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductID");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.ProductImage", b =>
+                {
+                    b.Property<int>("ImageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageID"));
+
+                    b.Property<string>("AltText")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("ImageURL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ImageID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ProductImages");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Shipping", b =>
+                {
+                    b.Property<int>("ShippingID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShippingID"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DeliveryStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ShippedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ShippingID");
+
+                    b.HasIndex("UserID")
+                        .IsUnique();
+
+                    b.ToTable("Shippings");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("GoogleId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Admin Address",
+                            Email = "admin@agrisky.com",
+                            FirstName = "Admin",
+                            LastName = "User",
+                            PasswordHash = "$2a$11$DgpvHxNvNM.RxfxQUsV/gOnCvcAPwVTsKKn2Zz.QogGfvJbHmuzPG",
+                            PhoneNumber = "01000000000",
+                            Role = "Admin"
+                        });
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Cart", b =>
+                {
+                    b.HasOne("Agrisky.Models.User", "User")
+                        .WithOne("Cart")
+                        .HasForeignKey("Agrisky.Models.Cart", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.CartItem", b =>
+                {
+                    b.HasOne("Agrisky.Models.Cart", "Cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Agrisky.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.ContactMessage", b =>
+                {
+                    b.HasOne("Agrisky.Models.Owner", null)
+                        .WithMany("LatestMessages")
+                        .HasForeignKey("OwnerID");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Feedback", b =>
+                {
+                    b.HasOne("Agrisky.Models.Product", "Product")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Agrisky.Models.User", "User")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Order", b =>
+                {
+                    b.HasOne("Agrisky.Models.Shipping", "Shipping")
+                        .WithMany("Orders")
+                        .HasForeignKey("ShippingID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Agrisky.Models.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shipping");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.OrderItem", b =>
+                {
+                    b.HasOne("Agrisky.Models.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Agrisky.Models.Product", "Product")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Payment", b =>
+                {
+                    b.HasOne("Agrisky.Models.Order", "Order")
+                        .WithOne("Payment")
+                        .HasForeignKey("Agrisky.Models.Payment", "OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Product", b =>
+                {
+                    b.HasOne("Agrisky.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.ProductImage", b =>
+                {
+                    b.HasOne("Agrisky.Models.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Shipping", b =>
+                {
+                    b.HasOne("Agrisky.Models.User", "User")
+                        .WithOne("Shipping")
+                        .HasForeignKey("Agrisky.Models.Shipping", "UserID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Cart", b =>
+                {
+                    b.Navigation("CartItems");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("Payment")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Owner", b =>
+                {
+                    b.Navigation("LatestMessages");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Product", b =>
+                {
+                    b.Navigation("Feedbacks");
+
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("ProductImages");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Shipping", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.User", b =>
+                {
+                    b.Navigation("Cart");
+
+                    b.Navigation("Feedbacks");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Shipping");
+                });
+#pragma warning restore 612, 618
+        }
+    }
+}
+</file>
+
+<file path="obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs">
+// <autogenerated />
+using System;
+using System.Reflection;
+[assembly: global::System.Runtime.Versioning.TargetFrameworkAttribute(".NETCoreApp,Version=v8.0", FrameworkDisplayName = ".NET 8.0")]
+</file>
+
+<file path="obj/Debug/net8.0/AgriskyApi.AssemblyInfo.cs">
+//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//     Runtime Version:4.0.30319.42000
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+using System;
+using System.Reflection;
+
+[assembly: System.Reflection.AssemblyCompanyAttribute("AgriskyApi")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8d79bbd298cccae423376716ac60f5cbc5c13cb0")]
+[assembly: System.Reflection.AssemblyProductAttribute("AgriskyApi")]
+[assembly: System.Reflection.AssemblyTitleAttribute("AgriskyApi")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+
+// Generated by the MSBuild WriteCodeFragment class.
+</file>
+
+<file path="obj/Debug/net8.0/AgriskyApi.GlobalUsings.g.cs">
+// <auto-generated/>
+global using global::Microsoft.AspNetCore.Builder;
+global using global::Microsoft.AspNetCore.Hosting;
+global using global::Microsoft.AspNetCore.Http;
+global using global::Microsoft.AspNetCore.Routing;
+global using global::Microsoft.Extensions.Configuration;
+global using global::Microsoft.Extensions.DependencyInjection;
+global using global::Microsoft.Extensions.Hosting;
+global using global::Microsoft.Extensions.Logging;
+global using global::System;
+global using global::System.Collections.Generic;
+global using global::System.IO;
+global using global::System.Linq;
+global using global::System.Net.Http;
+global using global::System.Net.Http.Json;
+global using global::System.Threading;
+global using global::System.Threading.Tasks;
+</file>
+
+<file path="obj/Debug/net8.0/AgriskyApi.MvcApplicationPartsAssemblyInfo.cs">
+//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//     Runtime Version:4.0.30319.42000
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+using System;
+using System.Reflection;
+
+[assembly: Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartAttribute("Swashbuckle.AspNetCore.SwaggerGen")]
+
+// Generated by the MSBuild WriteCodeFragment class.
+</file>
+
+<file path="Controllers/AuthController.cs">
+using Agrisky.Models;
+using Agrisky.Models.Agrisky.Models;
+using AgriskyApi.Dtos;
+using AgriskyApi.IRepo;
+using AgriskyApi.Services;
+using Google.Apis.Auth;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.SqlServer.Server;
+
+namespace AgriskyApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    [AllowAnonymous]
+    public class AuthController : ControllerBase
+    {
+        private readonly IUserRepo _repo;
+        private readonly IJwtServices _jwtService;
+        private readonly IConfiguration _config;
+
+        public AuthController(IUserRepo repo, IJwtServices jwtService, IConfiguration config)
+        {
+            _repo = repo;
+            _jwtService = jwtService;
+            _config = config;
+        }
+
+        // ── POST api/auth/register ────────────────────────────────────────────
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var email = model.Email.Trim().ToLower();
+
+            var user = new User
+            {
+                FirstName = model.FirstName.Trim(),
+                LastName = model.LastName.Trim(),
+                Email = email,
+                PhoneNumber = model.PhoneNumber,
+                Address = model.Address,
+                Role = "User",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password)
+            };
+
+            var result = await _repo.RegisterUserAsync(user);
+
+            if (!result)
+                return Conflict(new { message = "Email is already registered." });
+
+            return Ok(new { message = "Registration successful." });
+        }
+
+        // ── POST api/auth/login ───────────────────────────────────────────────
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = await _repo.GetUserByEmailAsync(model.Email.Trim().ToLower());
+
+            if (user == null)
+                return Unauthorized(new { message = "Invalid email or password." });
+
+            // Social-only accounts have no password
+            if (string.IsNullOrEmpty(user.PasswordHash))
+                return Unauthorized(new { message = "This account uses Google sign-in. Please use 'Continue with Google'." });
+
+            if (!BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
+                return Unauthorized(new { message = "Invalid email or password." });
+
+            var token = _jwtService.GenerateToken(user);
+
+            return Ok(new
+            {
+                token,
+                user = new
+                {
+                    user.Id,
+                    user.Email,
+                    user.FirstName,
+                    user.LastName,
+                    user.Role,
+                    user.ProfilePicture
+                }
+            });
+        }
+
+        // ── POST api/auth/google ──────────────────────────────────────────────
+        // React sends the Google ID token (credential) from @react-oauth/google
+        // Backend verifies it cryptographically using Google's public keys.
+        [HttpPost("google")]
+        public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.IdToken))
+                return BadRequest(new { message = "ID token is required." });
+
+            // ── Step 1: Verify the ID token with Google ───────────────────────
+            GoogleJsonWebSignature.Payload payload;
+            try
+            {
+                var settings = new GoogleJsonWebSignature.ValidationSettings
+                {
+                    // Only accept tokens issued for YOUR Google Client ID
+                    Audience = new[] { _config["Google:ClientId"] }
+                };
+
+                payload = await GoogleJsonWebSignature.ValidateAsync(dto.IdToken, settings);
+            }
+            catch (InvalidJwtException ex)
+            {
+                return Unauthorized(new { message = "Invalid Google token.", detail = ex.Message });
+            }
+
+            // ── Step 2: Find existing user or create a new one ────────────────
+            var email = payload.Email.ToLower().Trim();
+            var user = await _repo.GetUserByEmailAsync(email);
+
+            if (user == null)
+            {
+                // New user — register them automatically
+                user = new User
+                {
+                    FirstName = payload.GivenName ?? payload.Name?.Split(' ')[0] ?? "User",
+                    LastName = payload.FamilyName ?? (payload.Name?.Contains(' ') == true
+                                         ? string.Join(" ", payload.Name.Split(' ').Skip(1)) : ""),
+                    Email = email,
+                    GoogleId = payload.Subject,       // Google's unique user ID
+                    ProfilePicture = payload.Picture,
+                    Role = "User",
+                    PasswordHash = null                   // No password for social users
+                };
+
+                var registered = await _repo.RegisterUserAsync(user);
+
+                if (!registered)
+                {
+                    // Race condition: email appeared between check and insert — fetch it
+                    user = await _repo.GetUserByEmailAsync(email);
+                }
+            }
+            else
+            {
+                // Existing user — link Google account if not already linked
+                bool changed = false;
+
+                if (string.IsNullOrEmpty(user.GoogleId))
+                {
+                    user.GoogleId = payload.Subject;
+                    changed = true;
+                }
+                if (payload.Picture != null && user.ProfilePicture != payload.Picture)
+                {
+                    user.ProfilePicture = payload.Picture;
+                    changed = true;
+                }
+
+                if (changed)
+                    await _repo.UpdateUserAsync(user);
+            }
+
+            // ── Step 3: Issue JWT ─────────────────────────────────────────────
+            var token = _jwtService.GenerateToken(user!);
+
+            return Ok(new
+            {
+                token,
+                user = new
+                {
+                    user!.Id,
+                    user.Email,
+                    user.FirstName,
+                    user.LastName,
+                    user.Role,
+                    user.ProfilePicture
+                }
+            });
+        }
+    }
+
+    // ── Request DTO for Google endpoint ──────────────────────────────────────
+    public class GoogleLoginDto
+    {
+        public string IdToken { get; set; } = string.Empty;
+    }
+}
+</file>
+
+<file path="Controllers/OrderController.cs">
+using AgriskyApi.Dtos;
+using AgriskyApi.IRepo;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+
+namespace AgriskyApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class OrderController : ControllerBase
+    {
+        private readonly IOrderRepo _repo;
+
+        public OrderController(IOrderRepo repo)
+        {
+            _repo = repo;
+        }
+
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> CreateOrder([FromForm] CreateOrderFormInput input, IFormFile? proof)
+        {
+            // Basic null/empty checks
+            if (string.IsNullOrWhiteSpace(input.Items) ||
+                string.IsNullOrWhiteSpace(input.Shipping) ||
+                string.IsNullOrWhiteSpace(input.PaymentMethod))
+            {
+                return BadRequest(new
+                {
+                    message = "بعض الحقول مفقودة أو فارغة.",
+                    missingFields = new
+                    {
+                        PaymentMethod = string.IsNullOrWhiteSpace(input.PaymentMethod),
+                        Items = string.IsNullOrWhiteSpace(input.Items),
+                        Shipping = string.IsNullOrWhiteSpace(input.Shipping)
+                    }
+                });
+            }
+
+            try
+            {
+                // Fix: if Swagger strips the array brackets, wrap it back
+                var itemsJson = input.Items.Trim();
+                if (itemsJson.StartsWith("{"))
+                    itemsJson = $"[{itemsJson}]";
+
+                var itemsList = JsonConvert.DeserializeObject<List<OrderItemDto>>(itemsJson);
+                var shippingObj = JsonConvert.DeserializeObject<ShippingDto>(input.Shipping);
+
+                if (itemsList == null || !itemsList.Any())
+                    return BadRequest(new { message = "قائمة المنتجات فارغة أو غير صالحة." });
+
+                if (shippingObj == null)
+                    return BadRequest(new { message = "بيانات الشحن غير صالحة." });
+
+                var dto = new CreateOrderDto
+                {
+                    UserId = input.UserId,
+                    PaymentMethod = input.PaymentMethod,
+                    Items = itemsList,
+                    Shipping = shippingObj
+                };
+
+                var order = await _repo.CreateOrder(dto, proof);
+
+                return Ok(new
+                {
+                    message = "تم إنشاء الطلب بنجاح",
+                    orderId = order.OrderID,
+                    total = order.TotalAmount,
+                    status = order.Status
+                });
+            }
+            catch (JsonReaderException ex)
+            {
+                return BadRequest(new
+                {
+                    message = "خطأ في صيغة الـ JSON المرسلة. تأكد من الأقواس والاقتباسات.",
+                    details = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "حدث خطأ أثناء تنفيذ الطلب", error = ex.Message });
+            }
+        }
+    }
+}
+</file>
+
+<file path="Controllers/OwnerController.cs">
+using AgriskyApi.IRepo;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace AgriskyApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class OwnerController : ControllerBase
+    {
+        private readonly IOwnerRepo _repo;
+
+        public OwnerController(IOwnerRepo repo)
+        {
+            _repo = repo;
+        }
+
+        [HttpGet("dashboard")]
+        public async Task<IActionResult> Dashboard()
+        {
+            var data = await _repo.GetDashboardData();
+            return Ok(data);
+        }
+
+        [HttpGet("orders")]
+        public async Task<IActionResult> GetOrders()
+        {
+            var orders = await _repo.GetOrders();
+            return Ok(orders);
+        }
+
+        [HttpDelete("messages/{id}")]
+        public async Task<IActionResult> DeleteMessage(int id)
+        {
+            var result = await _repo.DeleteMessage(id);
+
+            if (!result)
+                return NotFound();
+
+            return Ok( "Deleted successfully" );
+        }
+
+        [HttpGet("proof/{orderId}")]
+        public async Task<IActionResult> GetProof(int orderId)
+        {
+            var path = await _repo.GetProofImage(orderId);
+
+            if (string.IsNullOrEmpty(path))
+                return NotFound("No proof found");
+
+            return Ok(new { image = path });
+        }
+    }
+}
+</file>
+
+<file path="Controllers/ProductController.cs">
+using Agrisky.Models;
+using AgriskyApi.Dtos;
+using AgriskyApi.IRepo;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace AgriskyApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductController : ControllerBase
+    {
+        private readonly IProductRepo _repo;
+
+        public ProductController(IProductRepo repo)
+        {
+            _repo = repo;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll(string search, int? categoryId)
+        {
+            var products = await _repo.GetAllWithFilter(search, categoryId);
+
+            var result = products.Select(p => new ProductDto
+            {
+                ProductID = p.ProductID,
+                Name = p.Name,
+                Description = p.Description,
+                Price = p.Price,
+                StockQuantity = p.StockQuantity,
+                CategoryName = p.Category.Name,
+                Images = p.ProductImages.Select(i => i.ImageURL).ToList()
+            });
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var p = await _repo.GetWithImages(id);
+
+            if (p == null)
+                return NotFound();
+
+            var result = new ProductDto
+            {
+                ProductID = p.ProductID,
+                Name = p.Name,
+                Description = p.Description,
+                Price = p.Price,
+                StockQuantity = p.StockQuantity,
+                CategoryName = p.Category?.Name,
+                Images = p.ProductImages.Select(i => i.ImageURL).ToList()
+            };
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateProductDto dto)
+        {
+            var product = new Product
+            {
+                Name = dto.Name,
+                Description = dto.Description,
+                Price = dto.Price,
+                StockQuantity = dto.StockQuantity,
+                CategoryID = dto.CategoryID
+            };
+
+            await _repo.Add(product);
+            await _repo.SaveAsync();
+
+            return Ok(new { message = "Created successfully", product.ProductID });
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, UpdateProductDto dto)
+        {
+            var product = await _repo.GetById(id);
+
+            if (product == null)
+                return NotFound();
+
+            product.Name = dto.Name;
+            product.Description = dto.Description;
+            product.Price = dto.Price;
+            product.StockQuantity = dto.StockQuantity;
+            product.CategoryID = dto.CategoryID;
+
+            _repo.Update(product);
+            await _repo.SaveAsync();
+
+            return Ok( "Updated successfully" );
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var product = await _repo.GetWithImages(id);
+
+            if (product == null)
+                return NotFound();
+
+            _repo.Delete(product);
+            await _repo.SaveAsync();
+
+            return Ok( "Deleted successfully" );
+        }
+    }
+}
+</file>
+
+<file path="Controllers/UserController.cs">
+using AgriskyApi.Dtos;
+using AgriskyApi.IRepo;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace AgriskyApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserRepo _repo;
+
+        public UserController(IUserRepo repo)
+        {
+            _repo = repo;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("products")]
+        public async Task<IActionResult> GetProducts(int? categoryId, string? search)
+        {
+            var data = await _repo.GetProducts(categoryId, search);
+            return Ok(data);
+        }
+
+        [HttpPost("add-to-cart/{userId}")]
+        public async Task<IActionResult> AddToCart(int userId, AddToCartDto dto)
+        {
+            var result = await _repo.AddToCart(userId, dto);
+            if (!result) return BadRequest(new { message = "Error adding to cart (Check stock or product ID)" });
+
+            return Ok(new { message = "Item added to cart successfully" });
+        }
+
+        [HttpGet("cart/{userId}")]
+        public async Task<IActionResult> GetCart(int userId)
+        {
+            var data = await _repo.GetCart(userId);
+            return Ok(data);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("contact")]
+        public async Task<IActionResult> Contact(ContactDto dto)
+        {
+            await _repo.SendMessage(dto);
+            return Ok(new { message = "Message sent successfully" });
+        }
+
+        // --- عمليات الطلبات (تحتاج تسجيل دخول) ---
+        [HttpGet("orders/{userId}")]
+        public async Task<IActionResult> Orders(int userId)
+        {
+            var data = await _repo.GetUserOrders(userId);
+            return Ok(data);
+        }
+    }
+}
+</file>
+
+<file path="Data/Models/AppDbcontext.cs">
+using Agrisky.Models.Agrisky.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace Agrisky.Models
+{
+    public class AppDbcontext : DbContext
+    {
+        public AppDbcontext(DbContextOptions<AppDbcontext> options) : base(options) { }
+
+        public DbSet<Owner> Owners { get; set; }
+        public DbSet<ContactMessage> ContactMessages { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Shipping> Shippings { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+
+ 
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Category>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+
+            modelBuilder.Entity<CartItem>()
+                .HasIndex(ci => new { ci.CartId, ci.ProductId })
+                .IsUnique();
+
+      
+
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Shipping)
+                .WithMany(s => s.Orders)
+                .HasForeignKey(o => o.ShippingID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Payment>()
+                .HasOne(p => p.Order)
+                .WithOne(o => o.Payment)
+                .HasForeignKey<Payment>(p => p.OrderID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Order)
+                .WithMany(o => o.OrderItems)
+                .HasForeignKey(oi => oi.OrderID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Product)
+                .WithMany(p => p.OrderItems)
+                .HasForeignKey(oi => oi.ProductID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Feedback>()
+                .HasOne(f => f.Product)
+                .WithMany(p => p.Feedbacks)
+                .HasForeignKey(f => f.ProductID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Feedback>()
+                .HasOne(f => f.User)
+                .WithMany(u => u.Feedbacks)
+                .HasForeignKey(f => f.UserID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ProductImage>()
+                .HasOne(i => i.Product)
+                .WithMany(p => p.ProductImages)
+                .HasForeignKey(i => i.ProductID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Shipping)
+                .WithOne(s => s.User)
+                .HasForeignKey<Shipping>(s => s.UserID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.User)
+                .WithOne(u => u.Cart)
+                .HasForeignKey<Cart>(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Cart)
+                .WithMany(c => c.CartItems)
+                .HasForeignKey(ci => ci.CartId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Product)
+                .WithMany()
+                .HasForeignKey(ci => ci.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    FirstName = "Admin",
+                    LastName = "User",
+                    Email = "admin@agrisky.com",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                    PhoneNumber = "01000000000",
+                    Address = "Admin Address",
+                    Role = "Admin"
+                }
+            );
+
+            
+            modelBuilder.Entity<Category>().HasData(
+                new Category { CategoryID = 1, Name = "Crops", Icon = "bi-flower1" },
+                new Category { CategoryID = 2, Name = "Fruits & Vegetables", Icon = "fa-solid fa-apple-whole" },
+                new Category { CategoryID = 3, Name = "Seeds", Icon = "fa-solid fa-seedling" },
+                new Category { CategoryID = 4, Name = "Pesticides", Icon = "bi-bug" },
+                new Category { CategoryID = 5, Name = "Tools", Icon = "bi-tools" },
+                new Category { CategoryID = 6, Name = "Smart Agri", Icon = "bi-cpu" },
+                new Category { CategoryID = 7, Name = "Services", Icon = "bi-truck" }
+            );
+        }
+    }
+}
+</file>
+
+<file path="Data/Models/AuthResponse.cs">
+namespace AgriskyApi.Data.Models
+{
+    public class AuthResponse
+    {
+        public string Token { get; set; }
+        public DateTime Expiration { get; set; }
+
+        public string Email { get; set; }
+        public string Role { get; set; }
+        public string FullName { get; set; }
+    }
+}
+</file>
+
+<file path="Data/Models/Cart.cs">
+using Agrisky.Models.Agrisky.Models;
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    public class Cart
+    {
+        [Key]
+        public int CartId { get; set; }
+
+        public int UserId { get; set; }
+        public User User { get; set; }
+
+        public List<CartItem> CartItems { get; set; } = new();
+    }
+}
+</file>
+
+<file path="Data/Models/CartItem.cs">
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    public class CartItem
+    {
+        [Key]
+        public int CartItemId { get; set; }
+
+        public int CartId { get; set; }
+        public Cart Cart { get; set; }
+
+        public int ProductId { get; set; }
+        public Product Product { get; set; }
+
+        [Range(1, 1000)]
+        public int Quantity { get; set; }
+    }
+}
+</file>
+
+<file path="Data/Models/Category.cs">
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    public class Category
+    {
+        public int CategoryID { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string Name { get; set; }
+
+        public string? Icon { get; set; }
+
+        public ICollection<Product> Products { get; set; }
+    }
+}
+</file>
+
+<file path="Data/Models/ContactMessage.cs">
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    public class ContactMessage
+    {
+
+        public int Id { get; set; }
+
+        [Required, StringLength(100)]
+        public string Name { get; set; }
+
+        [Required, EmailAddress]
+        public string Email { get; set; }
+
+        [Required, StringLength(1000)]
+        public string Message { get; set; }
+
+        public DateTime SubmittedAt { get; set; } = DateTime.Now;
+        public bool IsSeenByAdmin { get; set; } = false;
+
+    }
+}
+</file>
+
+<file path="Data/Models/EmailHelper.cs">
+using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
+
+public class EmailHelper
+{
+    public static async Task SendEmailAsync(string toEmail, string subject, string body)
+    {
+        var fromEmail = "mohamed.0523081@gmail.com"; 
+        var password = "fnqh siaa iaka mace";
+
+        var smtp = new SmtpClient("smtp.gmail.com", 587)
+        {
+            EnableSsl = true,
+            Credentials = new NetworkCredential(fromEmail, password)
+        };
+
+        var message = new MailMessage(fromEmail, toEmail, subject, body)
+        {
+            IsBodyHtml = true
+        };
+
+        await smtp.SendMailAsync(message);
+    }
+}
+</file>
+
+<file path="Data/Models/ErrorViewModel.cs">
+namespace Agrisky.Models
+{
+    public class ErrorViewModel
+    {
+        public string? RequestId { get; set; }
+
+        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+    }
+}
+</file>
+
+<file path="Data/Models/Feedback.cs">
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    public class Feedback
+    {
+        public int FeedbackID { get; set; }
+
+        public int ProductID { get; set; }
+        public int UserID { get; set; }
+
+        [Required]
+        [Range(1, 5)]
+        public int Rating { get; set; }
+
+        public string? Comment { get; set; }
+
+        public DateTime DateSubmitted { get; set; } = DateTime.Now;
+
+        public Product Product { get; set; }
+        public User User { get; set; }
+    }
+}
+</file>
+
+<file path="Data/Models/ForgotPasswordViewModel.cs">
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    public class ForgotPasswordViewModel
+    {
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Enter a valid email address.")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "New password is required.")]
+        [DataType(DataType.Password)]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]
+        public string NewPassword { get; set; }
+
+        [Required(ErrorMessage = "Confirm your new password.")]
+        [DataType(DataType.Password)]
+        [Compare("NewPassword", ErrorMessage = "Passwords do not match.")]
+        public string ConfirmPassword { get; set; }
+    }
+}
+</file>
+
+<file path="Data/Models/LoginModel.cs">
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    using System.ComponentModel.DataAnnotations;
+
+    namespace Agrisky.Models
+    {
+        public class LoginModel
+        {
+            [Required, EmailAddress]
+            public string Email { get; set; }
+
+            [Required]
+            public string Password { get; set; }
+
+            public bool RememberMe { get; set; }
+        }
+    }
+}
+</file>
+
+<file path="Data/Models/Order.cs">
+using Agrisky.Models;
+using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
+
+namespace Agrisky.Models
+{
+    public class Order
+    {
+        public int OrderID { get; set; }
+        public int UserID { get; set; }
+        public DateTime OrderDate { get; set; } = DateTime.Now;
+        public string Status { get; set; } = "Pending";
+
+        [Required]
+        public decimal TotalAmount { get; set; }
+
+        public User User { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; }
+        public int? ShippingID { get; set; }
+        public Shipping Shipping { get; set; }
+        public string PaymentMethod { get; set; }
+        public Payment Payment { get; set; }
+        public bool IsDeleted { get; set; } = false;
+        public bool IsSeenByAdmin { get; set; } = false;
+        public bool IsSeenByUser { get; set; } = true;
+        public bool IsDeliveredSeen { get; set; } = true;
+    }
+}
+</file>
+
+<file path="Data/Models/OrderItem.cs">
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    public class OrderItem
+    {
+        public int OrderItemID { get; set; }
+
+        public int OrderID { get; set; }
+
+        public int ProductID { get; set; }
+
+        [Required]
+        [Range(1, int.MaxValue)]
+        public int Quantity { get; set; }
+
+        [Required]
+        public decimal Price { get; set; }
+
+        public Order Order { get; set; }
+        public Product Product { get; set; }
+    }
+}
+</file>
+
+<file path="Data/Models/Owner.cs">
+namespace Agrisky.Models
+{
+    public class Owner
+    {
+        public int OwnerID { get; set; }
+        public decimal TotalSalesToday { get; set; }
+        public decimal TotalSalesMonth { get; set; }
+        public int TotalSoldProducts { get; set; }
+        public int CancelledOrdersCount { get; set; }
+
+        public string BestSellingProduct { get; set; }
+        public int BestSellingQuantity { get; set; }
+
+        public string WorstSellingProduct { get; set; }
+        public int WorstSellingQuantity { get; set; }
+
+        public List<ContactMessage> LatestMessages { get; set; }
+    }
+}
+</file>
+
+<file path="Data/Models/Payment.cs">
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    public class Payment
+    {
+        public int PaymentID { get; set; }
+
+        public int OrderID { get; set; }
+
+        [Required]
+        public string PaymentMethod { get; set; }
+
+        [Required]
+        public decimal AmountPaid { get; set; }
+
+        public DateTime PaymentDate { get; set; } = DateTime.Now;
+
+        public string Status { get; set; } = "Paid";
+
+        public Order Order { get; set; }
+        public string ProofImagePath { get; set; }
+
+    }
+}
+</file>
+
+<file path="Data/Models/Product.cs">
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    public class Product
+    {
+        public int ProductID { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string Name { get; set; }
+
+        public string? Description { get; set; }
+
+        [Required]
+        [Range(0, 99999)]
+        public decimal Price { get; set; }
+
+        [Range(0, int.MaxValue)]
+        public int StockQuantity { get; set; } = 0;
+
+
+        [Required]
+        public int CategoryID { get; set; }
+
+        public Category Category { get; set; }
+
+        public ICollection<ProductImage> ProductImages { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; }
+        public ICollection<Feedback> Feedbacks { get; set; }
+    }
+}
+</file>
+
+<file path="Data/Models/ProductImage.cs">
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    public class ProductImage
+    {
+        [Key]
+        public int ImageID { get; set; }
+
+
+        [Required]
+        public int ProductID { get; set; }
+
+        [Required]
+        public string ImageURL { get; set; }
+
+        [StringLength(150)]
+        public string? AltText { get; set; }
+
+        public Product Product { get; set; }
+    }
+}
+</file>
+
+<file path="Data/Models/ProductWithQuantity.cs">
+namespace Agrisky.Models
+{
+    public class ProductWithQuantity
+    {
+        public Product Product { get; set; }
+        public int Quantity { get; set; }
+    }
+
+
+}
+</file>
+
+<file path="Data/Models/RegisterModel.cs">
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    public class RegisterModel
+    {
+        [Required, MaxLength(50)]
+        public string FirstName { get; set; }
+
+        [Required, MaxLength(50)]
+        public string LastName { get; set; }
+
+        [Required, EmailAddress]
+        public string Email { get; set; }
+
+        [Phone]
+        public string? PhoneNumber { get; set; }
+
+        [MaxLength(200)]
+        public string? Address { get; set; }
+
+        [Required, MinLength(6)]
+        public string Password { get; set; }
+
+        [Required, Compare("Password")]
+        public string ConfirmPassword { get; set; }
+    }
+}
+</file>
+
+<file path="Data/Models/SessionExtensions.cs">
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
+
+public static class SessionExtensions
+{
+    public static void SetObjectAsJson(this ISession session, string key, object value)
+    {
+        session.SetString(key, JsonSerializer.Serialize(value));
+    }
+
+    public static T GetObjectFromJson<T>(this ISession session, string key)
+    {
+        var value = session.GetString(key);
+        return value == null ? default(T) : JsonSerializer.Deserialize<T>(value);
+    }
+}
+</file>
+
+<file path="Data/Models/Shipping.cs">
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    public class Shipping
+    {
+        public int ShippingID { get; set; }
+
+        [Required(ErrorMessage = "Address is required")]
+        public string Address { get; set; }
+
+        [Required(ErrorMessage = "City is required")]
+        public string City { get; set; }
+
+        [Required(ErrorMessage = "Country is required")]
+        public string Country { get; set; }
+
+        [Required(ErrorMessage = "Zip Code is required")]
+        public string ZipCode { get; set; }
+
+        [Required(ErrorMessage = "Phone number is required")]
+        [Phone]
+        public string PhoneNumber { get; set; }
+
+        public DateTime? ShippedDate { get; set; }
+
+        public string DeliveryStatus { get; set; } = "Not Shipped";
+        public ICollection<Order> Orders { get; set; }
+
+        public int UserID { get; set; }
+        public User User { get; set; }
+
+    }
+}
+</file>
+
+<file path="Data/Models/User.cs">
+using System.ComponentModel.DataAnnotations;
+
+namespace Agrisky.Models
+{
+    public class User
+    {
+        public int Id { get; set; }
+
+        [Required, MaxLength(50)]
+        public string FirstName { get; set; }
+
+        [Required, MaxLength(50)]
+        public string LastName { get; set; }
+
+        [Required, EmailAddress, MaxLength(100)]
+        public string Email { get; set; }
+
+        public string? PasswordHash { get; set; }
+
+        [Phone, MaxLength(15)]
+        public string? PhoneNumber { get; set; }
+
+        [MaxLength(200)]
+        public string? Address { get; set; }
+
+        [Required]
+        public string Role { get; set; } = "User";
+
+        // ── Google OAuth fields ───────────────────────────────────────
+        public string? GoogleId { get; set; }          // Google's unique "sub" ID
+        public string? ProfilePicture { get; set; }    // Google profile photo URL
+
+        // ── Navigation ────────────────────────────────────────────────
+        public Shipping? Shipping { get; set; }
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
+        public Cart? Cart { get; set; }
+        public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+    }
+}
+</file>
+
+<file path="Dtos/OrderDto.cs">
+namespace AgriskyApi.Dtos
+{
+    public class OrderItemDto
+    {
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    public class ShippingDto
+    {
+        public string Address { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;
+        public string Country { get; set; } = string.Empty;
+        public string ZipCode { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+    }
+
+    public class CreateOrderDto
+    {
+        public int UserId { get; set; }
+        public List<OrderItemDto> Items { get; set; } = new();
+        public ShippingDto Shipping { get; set; } = new();
+        public string PaymentMethod { get; set; } = string.Empty;
+    }
+
+    /// <summary>
+    /// Used to receive multipart/form-data from the API.
+    /// Items and Shipping are raw JSON strings that get deserialized in the controller.
+    /// </summary>
+    public class CreateOrderFormInput
+    {
+        public int UserId { get; set; }
+        public string PaymentMethod { get; set; } = string.Empty;
+
+        /// <summary>
+        /// JSON array of items. Example: [{"ProductId": 1, "Quantity": 2}]
+        /// </summary>
+        public string Items { get; set; } = string.Empty;
+
+        /// <summary>
+        /// JSON object for shipping. Example: {"Address":"Cairo","City":"Cairo","Country":"Egypt","ZipCode":"12345","PhoneNumber":"01000000000"}
+        /// </summary>
+        public string Shipping { get; set; } = string.Empty;
+    }
+}
+</file>
+
+<file path="Dtos/OwnerDto.cs">
+namespace AgriskyApi.Dtos
+{
+    public class DashboardDto
+    {
+        public decimal TotalSalesToday { get; set; }
+        public decimal TotalSalesMonth { get; set; }
+        public int TotalSoldProducts { get; set; }
+        public int CancelledOrdersCount { get; set; }
+
+        public string BestSellingProduct { get; set; }
+        public int BestSellingQuantity { get; set; }
+
+        public string WorstSellingProduct { get; set; }
+        public int WorstSellingQuantity { get; set; }
+
+        public List<ContactMessageDto> LatestMessages { get; set; }
+        public List<FeedbackDto> LatestFeedbacks { get; set; }
+    }
+    public class ContactMessageDto
+    {
+        public int Id { get; set; }
+        public string Email { get; set; }
+        public string Message { get; set; }
+        public DateTime SubmittedAt { get; set; }
+    }
+    public class FeedbackDto
+    {
+        public string UserName { get; set; }
+        public string ProductName { get; set; }
+        public string Comment { get; set; }
+        public DateTime DateSubmitted { get; set; }
+    }
+    public class OwnerOrderDto
+    {
+        public int OrderID { get; set; }
+        public string UserName { get; set; }
+        public decimal TotalAmount { get; set; }
+        public string PaymentMethod { get; set; }
+        public string Status { get; set; }
+        public DateTime OrderDate { get; set; }
+
+        public List<OrderItemDetailsDto> Items { get; set; }
+    }
+    public class OrderItemDetailsDto
+    {
+        public string ProductName { get; set; }
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+    }
+
+}
+</file>
+
+<file path="Dtos/UserDto.cs">
+namespace AgriskyApi.Dtos
+{
+    public class RegisterDto
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Password { get; set; }
+    }
+    public class LoginDto
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+    public class CartItemDto
+    {
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+    }
+    public class AddToCartDto
+    {
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    public class UpdateQuantityDto
+    {
+        public int ProductId { get; set; }
+        public int NewQuantity { get; set; }
+    }
+
+    public class ContactDto
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Message { get; set; }
+    }
+    public class OrderDto
+    {
+        public int OrderID { get; set; }
+        public DateTime OrderDate { get; set; }
+        public string Status { get; set; }
+        public decimal TotalAmount { get; set; }
+    }
+
+}
+</file>
+
+<file path="IRepo/IGenricRepo.cs">
+namespace AgriskyApi.IRepo
+{
+    public interface IGenricRepo<T> where T : class
+    {
+        Task<IEnumerable<T>> GetAll();
+        Task<T> GetById(int id);
+        Task Add(T entity);
+        void Update(T entity);
+        void Delete(T entity);
+        Task SaveAsync();
+    }
+}
+</file>
+
+<file path="IRepo/IOrderRepo.cs">
+using Agrisky.Models;
+using AgriskyApi.Dtos;
+
+namespace AgriskyApi.IRepo
+{
+    public interface IOrderRepo : IGenricRepo<Order>
+    {
+        Task<Order> CreateOrder(CreateOrderDto dto, IFormFile? proof);
+    }
+}
+</file>
+
+<file path="IRepo/IOwnerRepo.cs">
+using Agrisky.Models;
+using AgriskyApi.Dtos;
+
+namespace AgriskyApi.IRepo
+{
+    public interface IOwnerRepo:IGenricRepo<Owner>
+    {
+        Task<DashboardDto> GetDashboardData();
+        Task<IEnumerable<OwnerOrderDto>> GetOrders();
+        Task<bool> DeleteMessage(int messageId);
+        Task<string> GetProofImage(int orderId);
+    }
+}
+</file>
+
+<file path="IRepo/IProductRepo.cs">
+using Agrisky.Models;
+
+namespace AgriskyApi.IRepo
+{
+    public interface IProductRepo:IGenricRepo<Product>
+    {
+        Task<IEnumerable<Product>> GetAllWithFilter(string search, int? categoryId);
+        Task<Product> GetWithImages(int id);
+    }
+}
+</file>
+
+<file path="IRepo/IUserRepo.cs">
+using Agrisky.Models;
+using AgriskyApi.Dtos;
+
+namespace AgriskyApi.IRepo
+{
+    public interface IUserRepo : IGenricRepo<User>
+    {
+        Task<IEnumerable<ProductDto>> GetProducts(int? categoryId, string search);
+
+        Task<bool> AddToCart(int userId, AddToCartDto dto);
+        Task<IEnumerable<CartItemDto>> GetCart(int userId);
+        Task<IEnumerable<OrderDto>> GetUserOrders(int userId);
+
+        Task<bool> SendMessage(ContactDto dto);
+
+        Task<bool> RegisterUserAsync(User user);
+
+        Task<User?> GetUserByEmailAsync(string email);
+
+        // NEW: needed to link GoogleId / update ProfilePicture on first Google login
+        Task UpdateUserAsync(User user);
+    }
+}
+</file>
+
+<file path="Migrations/20260411162936_init.cs">
+using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace AgriskyApi.Migrations
+{
+    /// <inheritdoc />
+    public partial class init : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    CategoryID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Icon = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.CategoryID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Owners",
+                columns: table => new
+                {
+                    OwnerID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TotalSalesToday = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalSalesMonth = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalSoldProducts = table.Column<int>(type: "int", nullable: false),
+                    CancelledOrdersCount = table.Column<int>(type: "int", nullable: false),
+                    BestSellingProduct = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BestSellingQuantity = table.Column<int>(type: "int", nullable: false),
+                    WorstSellingProduct = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WorstSellingQuantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Owners", x => x.OwnerID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ProductID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    StockQuantity = table.Column<int>(type: "int", nullable: false),
+                    CategoryID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ProductID);
+                    table.ForeignKey(
+                        name: "FK_Products_Categories_CategoryID",
+                        column: x => x.CategoryID,
+                        principalTable: "Categories",
+                        principalColumn: "CategoryID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContactMessages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    SubmittedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsSeenByAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    OwnerID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactMessages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ContactMessages_Owners_OwnerID",
+                        column: x => x.OwnerID,
+                        principalTable: "Owners",
+                        principalColumn: "OwnerID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Carts",
+                columns: table => new
+                {
+                    CartId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carts", x => x.CartId);
+                    table.ForeignKey(
+                        name: "FK_Carts_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Shippings",
+                columns: table => new
+                {
+                    ShippingID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShippedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeliveryStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shippings", x => x.ShippingID);
+                    table.ForeignKey(
+                        name: "FK_Shippings_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Feedbacks",
+                columns: table => new
+                {
+                    FeedbackID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateSubmitted = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Feedbacks", x => x.FeedbackID);
+                    table.ForeignKey(
+                        name: "FK_Feedbacks_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ProductID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Feedbacks_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductImages",
+                columns: table => new
+                {
+                    ImageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AltText = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductImages", x => x.ImageID);
+                    table.ForeignKey(
+                        name: "FK_ProductImages_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ProductID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CartItems",
+                columns: table => new
+                {
+                    CartItemId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CartId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItems", x => x.CartItemId);
+                    table.ForeignKey(
+                        name: "FK_CartItems_Carts_CartId",
+                        column: x => x.CartId,
+                        principalTable: "Carts",
+                        principalColumn: "CartId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CartItems_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ShippingID = table.Column<int>(type: "int", nullable: true),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    IsSeenByAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    IsSeenByUser = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeliveredSeen = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderID);
+                    table.ForeignKey(
+                        name: "FK_Orders_Shippings_ShippingID",
+                        column: x => x.ShippingID,
+                        principalTable: "Shippings",
+                        principalColumn: "ShippingID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderItems",
+                columns: table => new
+                {
+                    OrderItemID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderID = table.Column<int>(type: "int", nullable: false),
+                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItems", x => x.OrderItemID);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Orders_OrderID",
+                        column: x => x.OrderID,
+                        principalTable: "Orders",
+                        principalColumn: "OrderID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ProductID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    PaymentID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderID = table.Column<int>(type: "int", nullable: false),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AmountPaid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProofImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.PaymentID);
+                    table.ForeignKey(
+                        name: "FK_Payments_Orders_OrderID",
+                        column: x => x.OrderID,
+                        principalTable: "Orders",
+                        principalColumn: "OrderID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryID", "Icon", "Name" },
+                values: new object[,]
+                {
+                    { 1, "bi-flower1", "Crops" },
+                    { 2, "fa-solid fa-apple-whole", "Fruits & Vegetables" },
+                    { 3, "fa-solid fa-seedling", "Seeds" },
+                    { 4, "bi-bug", "Pesticides" },
+                    { 5, "bi-tools", "Tools" },
+                    { 6, "bi-cpu", "Smart Agri" },
+                    { 7, "bi-truck", "Services" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Address", "Email", "FirstName", "LastName", "PasswordHash", "PhoneNumber", "Role" },
+                values: new object[] { 1, "Admin Address", "admin@agrisky.com", "Admin", "User", "$2a$11$ZSMH/KHNG2F.O55EG4jHAefGOYJ2sS.ii1oKldTEaoM7P1o9nFTfq", "01000000000", "Admin" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItems_CartId_ProductId",
+                table: "CartItems",
+                columns: new[] { "CartId", "ProductId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItems_ProductId",
+                table: "CartItems",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Carts_UserId",
+                table: "Carts",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_Name",
+                table: "Categories",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ContactMessages_OwnerID",
+                table: "ContactMessages",
+                column: "OwnerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedbacks_ProductID",
+                table: "Feedbacks",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedbacks_UserID",
+                table: "Feedbacks",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_OrderID",
+                table: "OrderItems",
+                column: "OrderID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_ProductID",
+                table: "OrderItems",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_ShippingID",
+                table: "Orders",
+                column: "ShippingID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserID",
+                table: "Orders",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_OrderID",
+                table: "Payments",
+                column: "OrderID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductImages_ProductID",
+                table: "ProductImages",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_CategoryID",
+                table: "Products",
+                column: "CategoryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shippings_UserID",
+                table: "Shippings",
+                column: "UserID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "CartItems");
+
+            migrationBuilder.DropTable(
+                name: "ContactMessages");
+
+            migrationBuilder.DropTable(
+                name: "Feedbacks");
+
+            migrationBuilder.DropTable(
+                name: "OrderItems");
+
+            migrationBuilder.DropTable(
+                name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "ProductImages");
+
+            migrationBuilder.DropTable(
+                name: "Carts");
+
+            migrationBuilder.DropTable(
+                name: "Owners");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Shippings");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+        }
+    }
+}
+</file>
+
+<file path="Migrations/20260411162936_init.Designer.cs">
+// <auto-generated />
+using System;
+using Agrisky.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+
+#nullable disable
+
+namespace AgriskyApi.Migrations
+{
+    [DbContext(typeof(AppDbcontext))]
+    [Migration("20260411162936_init")]
+    partial class init
+    {
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        {
+#pragma warning disable 612, 618
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Agrisky.Models.Cart", b =>
+                {
+                    b.Property<int>("CartId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.CartItem", b =>
+                {
+                    b.Property<int>("CartItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemId"));
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartItemId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("CartId", "ProductId")
+                        .IsUnique();
+
+                    b.ToTable("CartItems");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryID"));
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("CategoryID");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            Icon = "bi-flower1",
+                            Name = "Crops"
+                        },
+                        new
+                        {
+                            CategoryID = 2,
+                            Icon = "fa-solid fa-apple-whole",
+                            Name = "Fruits & Vegetables"
+                        },
+                        new
+                        {
+                            CategoryID = 3,
+                            Icon = "fa-solid fa-seedling",
+                            Name = "Seeds"
+                        },
+                        new
+                        {
+                            CategoryID = 4,
+                            Icon = "bi-bug",
+                            Name = "Pesticides"
+                        },
+                        new
+                        {
+                            CategoryID = 5,
+                            Icon = "bi-tools",
+                            Name = "Tools"
+                        },
+                        new
+                        {
+                            CategoryID = 6,
+                            Icon = "bi-cpu",
+                            Name = "Smart Agri"
+                        },
+                        new
+                        {
+                            CategoryID = 7,
+                            Icon = "bi-truck",
+                            Name = "Services"
+                        });
+                });
+
+            modelBuilder.Entity("Agrisky.Models.ContactMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSeenByAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("OwnerID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerID");
+
+                    b.ToTable("ContactMessages");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Feedback", b =>
+                {
+                    b.Property<int>("FeedbackID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeedbackID"));
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateSubmitted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("FeedbackID");
+
+                    b.HasIndex("ProductID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Feedbacks");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Order", b =>
+                {
+                    b.Property<int>("OrderID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeliveredSeen")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSeenByAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSeenByUser")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ShippingID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderID");
+
+                    b.HasIndex("ShippingID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.OrderItem", b =>
+                {
+                    b.Property<int>("OrderItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemID"));
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderItemID");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Owner", b =>
+                {
+                    b.Property<int>("OwnerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OwnerID"));
+
+                    b.Property<string>("BestSellingProduct")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BestSellingQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CancelledOrdersCount")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalSalesMonth")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalSalesToday")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TotalSoldProducts")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WorstSellingProduct")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WorstSellingQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("OwnerID");
+
+                    b.ToTable("Owners");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Payment", b =>
+                {
+                    b.Property<int>("PaymentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"));
+
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProofImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PaymentID");
+
+                    b.HasIndex("OrderID")
+                        .IsUnique();
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Product", b =>
+                {
+                    b.Property<int>("ProductID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductID"));
+
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("StockQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductID");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.ProductImage", b =>
+                {
+                    b.Property<int>("ImageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageID"));
+
+                    b.Property<string>("AltText")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("ImageURL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ImageID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ProductImages");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Shipping", b =>
+                {
+                    b.Property<int>("ShippingID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShippingID"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DeliveryStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ShippedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ShippingID");
+
+                    b.HasIndex("UserID")
+                        .IsUnique();
+
+                    b.ToTable("Shippings");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Admin Address",
+                            Email = "admin@agrisky.com",
+                            FirstName = "Admin",
+                            LastName = "User",
+                            PasswordHash = "$2a$11$ZSMH/KHNG2F.O55EG4jHAefGOYJ2sS.ii1oKldTEaoM7P1o9nFTfq",
+                            PhoneNumber = "01000000000",
+                            Role = "Admin"
+                        });
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Cart", b =>
+                {
+                    b.HasOne("Agrisky.Models.User", "User")
+                        .WithOne("Cart")
+                        .HasForeignKey("Agrisky.Models.Cart", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.CartItem", b =>
+                {
+                    b.HasOne("Agrisky.Models.Cart", "Cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Agrisky.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.ContactMessage", b =>
+                {
+                    b.HasOne("Agrisky.Models.Owner", null)
+                        .WithMany("LatestMessages")
+                        .HasForeignKey("OwnerID");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Feedback", b =>
+                {
+                    b.HasOne("Agrisky.Models.Product", "Product")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Agrisky.Models.User", "User")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Order", b =>
+                {
+                    b.HasOne("Agrisky.Models.Shipping", "Shipping")
+                        .WithMany("Orders")
+                        .HasForeignKey("ShippingID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Agrisky.Models.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shipping");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.OrderItem", b =>
+                {
+                    b.HasOne("Agrisky.Models.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Agrisky.Models.Product", "Product")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Payment", b =>
+                {
+                    b.HasOne("Agrisky.Models.Order", "Order")
+                        .WithOne("Payment")
+                        .HasForeignKey("Agrisky.Models.Payment", "OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Product", b =>
+                {
+                    b.HasOne("Agrisky.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.ProductImage", b =>
+                {
+                    b.HasOne("Agrisky.Models.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Shipping", b =>
+                {
+                    b.HasOne("Agrisky.Models.User", "User")
+                        .WithOne("Shipping")
+                        .HasForeignKey("Agrisky.Models.Shipping", "UserID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Cart", b =>
+                {
+                    b.Navigation("CartItems");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("Payment")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Owner", b =>
+                {
+                    b.Navigation("LatestMessages");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Product", b =>
+                {
+                    b.Navigation("Feedbacks");
+
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("ProductImages");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Shipping", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.User", b =>
+                {
+                    b.Navigation("Cart");
+
+                    b.Navigation("Feedbacks");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Shipping");
+                });
+#pragma warning restore 612, 618
+        }
+    }
+}
+</file>
+
+<file path="Migrations/AppDbcontextModelSnapshot.cs">
+// <auto-generated />
+using System;
+using Agrisky.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+
+#nullable disable
+
+namespace AgriskyApi.Migrations
+{
+    [DbContext(typeof(AppDbcontext))]
+    partial class AppDbcontextModelSnapshot : ModelSnapshot
+    {
+        protected override void BuildModel(ModelBuilder modelBuilder)
+        {
+#pragma warning disable 612, 618
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Agrisky.Models.Cart", b =>
+                {
+                    b.Property<int>("CartId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.CartItem", b =>
+                {
+                    b.Property<int>("CartItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemId"));
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartItemId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("CartId", "ProductId")
+                        .IsUnique();
+
+                    b.ToTable("CartItems");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryID"));
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("CategoryID");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            Icon = "bi-flower1",
+                            Name = "Crops"
+                        },
+                        new
+                        {
+                            CategoryID = 2,
+                            Icon = "fa-solid fa-apple-whole",
+                            Name = "Fruits & Vegetables"
+                        },
+                        new
+                        {
+                            CategoryID = 3,
+                            Icon = "fa-solid fa-seedling",
+                            Name = "Seeds"
+                        },
+                        new
+                        {
+                            CategoryID = 4,
+                            Icon = "bi-bug",
+                            Name = "Pesticides"
+                        },
+                        new
+                        {
+                            CategoryID = 5,
+                            Icon = "bi-tools",
+                            Name = "Tools"
+                        },
+                        new
+                        {
+                            CategoryID = 6,
+                            Icon = "bi-cpu",
+                            Name = "Smart Agri"
+                        },
+                        new
+                        {
+                            CategoryID = 7,
+                            Icon = "bi-truck",
+                            Name = "Services"
+                        });
+                });
+
+            modelBuilder.Entity("Agrisky.Models.ContactMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSeenByAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("OwnerID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerID");
+
+                    b.ToTable("ContactMessages");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Feedback", b =>
+                {
+                    b.Property<int>("FeedbackID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeedbackID"));
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateSubmitted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("FeedbackID");
+
+                    b.HasIndex("ProductID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Feedbacks");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Order", b =>
+                {
+                    b.Property<int>("OrderID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"));
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeliveredSeen")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSeenByAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSeenByUser")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ShippingID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderID");
+
+                    b.HasIndex("ShippingID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.OrderItem", b =>
+                {
+                    b.Property<int>("OrderItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemID"));
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderItemID");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Owner", b =>
+                {
+                    b.Property<int>("OwnerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OwnerID"));
+
+                    b.Property<string>("BestSellingProduct")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BestSellingQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CancelledOrdersCount")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalSalesMonth")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalSalesToday")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TotalSoldProducts")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WorstSellingProduct")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WorstSellingQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("OwnerID");
+
+                    b.ToTable("Owners");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Payment", b =>
+                {
+                    b.Property<int>("PaymentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"));
+
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProofImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PaymentID");
+
+                    b.HasIndex("OrderID")
+                        .IsUnique();
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Product", b =>
+                {
+                    b.Property<int>("ProductID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductID"));
+
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("StockQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductID");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.ProductImage", b =>
+                {
+                    b.Property<int>("ImageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageID"));
+
+                    b.Property<string>("AltText")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("ImageURL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ImageID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ProductImages");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Shipping", b =>
+                {
+                    b.Property<int>("ShippingID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShippingID"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DeliveryStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ShippedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ShippingID");
+
+                    b.HasIndex("UserID")
+                        .IsUnique();
+
+                    b.ToTable("Shippings");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("GoogleId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Admin Address",
+                            Email = "admin@agrisky.com",
+                            FirstName = "Admin",
+                            LastName = "User",
+                            PasswordHash = "$2a$11$DgpvHxNvNM.RxfxQUsV/gOnCvcAPwVTsKKn2Zz.QogGfvJbHmuzPG",
+                            PhoneNumber = "01000000000",
+                            Role = "Admin"
+                        });
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Cart", b =>
+                {
+                    b.HasOne("Agrisky.Models.User", "User")
+                        .WithOne("Cart")
+                        .HasForeignKey("Agrisky.Models.Cart", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.CartItem", b =>
+                {
+                    b.HasOne("Agrisky.Models.Cart", "Cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Agrisky.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.ContactMessage", b =>
+                {
+                    b.HasOne("Agrisky.Models.Owner", null)
+                        .WithMany("LatestMessages")
+                        .HasForeignKey("OwnerID");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Feedback", b =>
+                {
+                    b.HasOne("Agrisky.Models.Product", "Product")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Agrisky.Models.User", "User")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Order", b =>
+                {
+                    b.HasOne("Agrisky.Models.Shipping", "Shipping")
+                        .WithMany("Orders")
+                        .HasForeignKey("ShippingID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Agrisky.Models.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shipping");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.OrderItem", b =>
+                {
+                    b.HasOne("Agrisky.Models.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Agrisky.Models.Product", "Product")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Payment", b =>
+                {
+                    b.HasOne("Agrisky.Models.Order", "Order")
+                        .WithOne("Payment")
+                        .HasForeignKey("Agrisky.Models.Payment", "OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Product", b =>
+                {
+                    b.HasOne("Agrisky.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.ProductImage", b =>
+                {
+                    b.HasOne("Agrisky.Models.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Shipping", b =>
+                {
+                    b.HasOne("Agrisky.Models.User", "User")
+                        .WithOne("Shipping")
+                        .HasForeignKey("Agrisky.Models.Shipping", "UserID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Cart", b =>
+                {
+                    b.Navigation("CartItems");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("Payment")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Owner", b =>
+                {
+                    b.Navigation("LatestMessages");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Product", b =>
+                {
+                    b.Navigation("Feedbacks");
+
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("ProductImages");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.Shipping", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Agrisky.Models.User", b =>
+                {
+                    b.Navigation("Cart");
+
+                    b.Navigation("Feedbacks");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Shipping");
+                });
+#pragma warning restore 612, 618
+        }
+    }
+}
+</file>
+
+<file path="Program.cs">
+using Agrisky.Models;
+using AgriskyApi.IRepo;
+using AgriskyApi.Repo;
+using AgriskyApi.Services;
+using AgriskyApi.Services.Implementation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// ── Database ──────────────────────────────────────────────────────────────
+builder.Services.AddDbContext<AppDbcontext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
+
+// ── Repositories & Services ───────────────────────────────────────────────
+builder.Services.AddScoped(typeof(IGenricRepo<>), typeof(GenricRepo<>));
+builder.Services.AddScoped<IOwnerRepo, OwnerRepo>();
+builder.Services.AddScoped<IUserRepo, UserRepo>();
+builder.Services.AddScoped<IOrderRepo, OrderRepo>();
+builder.Services.AddScoped<IProductRepo, ProductRepo>();
+builder.Services.AddScoped<IJwtServices, JwtService>();
+
+// ── CORS — allow Agrisky-frontend (Vite default port 5173) ───────────────
+var allowedOrigins = builder.Configuration
+    .GetSection("AllowedOrigins").Get<string[]>()
+    ?? new[] { "http://localhost:5173" };
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AgriskyFrontend", policy =>
+        policy.WithOrigins(allowedOrigins)
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials());
+});
+
+// ── JWT Authentication ────────────────────────────────────────────────────
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var keyString = jwtSettings["Key"];
+
+if (string.IsNullOrEmpty(keyString))
+    throw new Exception("JWT Key is missing in appsettings.json");
+
+var key = Encoding.UTF8.GetBytes(keyString);
+
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ClockSkew = TimeSpan.Zero
+        };
+
+        // Return clean JSON on 401 (not a redirect) — needed by React
+        options.Events = new JwtBearerEvents
+        {
+            OnChallenge = async ctx =>
+            {
+                ctx.HandleResponse();
+                ctx.Response.StatusCode = 401;
+                ctx.Response.ContentType = "application/json";
+                await ctx.Response.WriteAsync("{\"message\":\"Unauthorized.\"}");
+            }
+        };
+    });
+
+builder.Services.AddAuthorization();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+
+// ── Swagger with Bearer support ───────────────────────────────────────────
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Agrisky API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter: Bearer {your token}"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id   = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
+var app = builder.Build();
+
+// ── Middleware Pipeline ───────────────────────────────────────────────────
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseStaticFiles();
+app.UseHttpsRedirection();
+
+// CORS must come BEFORE Authentication/Authorization
+app.UseCors("AgriskyFrontend");
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+</file>
+
+<file path="Repo/GenricRepo.cs">
+using Agrisky.Models;
+using AgriskyApi.IRepo;
+using Microsoft.EntityFrameworkCore;
+
+namespace AgriskyApi.Repo
+{
+    public class GenricRepo<T>:IGenricRepo<T> where T : class 
+    {
+        protected readonly AppDbcontext _context;
+        private readonly DbSet<T> _dbSet;
+
+        public GenricRepo(AppDbcontext context)
+        {
+            _context = context;
+            _dbSet = _context.Set<T>();
+        }
+
+        public async Task<IEnumerable<T>> GetAll()
+            => await _dbSet.ToListAsync();
+
+        public async Task<T> GetById(int id)
+            => await _dbSet.FindAsync(id);
+
+        public async Task Add(T entity)
+            => await _dbSet.AddAsync(entity);
+
+        public void Update(T entity)
+            => _dbSet.Update(entity);
+
+        public void Delete(T entity)
+            => _dbSet.Remove(entity);
+
+        public async Task SaveAsync()
+            => await _context.SaveChangesAsync();
+    }
+}
+</file>
+
+<file path="Repo/OrderRepo.cs">
+using Agrisky.Models;
+using AgriskyApi.Dtos;
+using AgriskyApi.IRepo;
+using Microsoft.EntityFrameworkCore;
+
+namespace AgriskyApi.Repo
+{
+    public class OrderRepo : GenricRepo<Order>, IOrderRepo
+    {
+        private readonly IWebHostEnvironment _env;
+
+        public OrderRepo(AppDbcontext context, IWebHostEnvironment env) : base(context)
+        {
+            _env = env;
+        }
+
+        public async Task<Order> CreateOrder(CreateOrderDto dto, IFormFile? proof)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                // 1. Update or create shipping info
+                var shipping = await _context.Shippings.FirstOrDefaultAsync(s => s.UserID == dto.UserId);
+                if (shipping != null)
+                {
+                    shipping.Address = dto.Shipping.Address;
+                    shipping.City = dto.Shipping.City;
+                    shipping.Country = dto.Shipping.Country;
+                    shipping.ZipCode = dto.Shipping.ZipCode;
+                    shipping.PhoneNumber = dto.Shipping.PhoneNumber;
+                }
+                else
+                {
+                    shipping = new Shipping
+                    {
+                        UserID = dto.UserId,
+                        Address = dto.Shipping.Address,
+                        City = dto.Shipping.City,
+                        Country = dto.Shipping.Country,
+                        ZipCode = dto.Shipping.ZipCode,
+                        PhoneNumber = dto.Shipping.PhoneNumber
+                    };
+                    _context.Shippings.Add(shipping);
+                }
+                await _context.SaveChangesAsync();
+
+                // 2. Validate products and stock
+                var productIds = dto.Items.Select(i => i.ProductId).ToList();
+                var products = await _context.Products
+                    .Where(p => productIds.Contains(p.ProductID))
+                    .ToListAsync();
+
+                decimal subtotal = 0;
+                foreach (var item in dto.Items)
+                {
+                    var product = products.FirstOrDefault(p => p.ProductID == item.ProductId);
+                    if (product == null)
+                        throw new Exception($"المنتج رقم {item.ProductId} غير موجود.");
+                    if (product.StockQuantity < item.Quantity)
+                        throw new Exception($"المخزون غير كافٍ للمنتج: {product.Name}");
+
+                    subtotal += product.Price * item.Quantity;
+                }
+
+                // 3. Create the order (subtotal + fixed shipping fee)
+                decimal total = subtotal + 7.7m;
+                var order = new Order
+                {
+                    UserID = dto.UserId,
+                    ShippingID = shipping.ShippingID,
+                    TotalAmount = total,
+                    OrderDate = DateTime.Now,
+                    Status = "Pending",
+                    PaymentMethod = dto.PaymentMethod,
+                    IsDeleted = false,
+                    IsSeenByAdmin = false
+                };
+
+                _context.Orders.Add(order);
+                await _context.SaveChangesAsync();
+
+                // 4. Add order items and reduce stock
+                foreach (var item in dto.Items)
+                {
+                    var product = products.First(p => p.ProductID == item.ProductId);
+                    _context.OrderItems.Add(new OrderItem
+                    {
+                        OrderID = order.OrderID,
+                        ProductID = product.ProductID,
+                        Quantity = item.Quantity,
+                        Price = product.Price
+                    });
+                    product.StockQuantity -= item.Quantity;
+                }
+
+                // 5. Handle payment proof (VodafoneCash only)
+                string proofPath = string.Empty;
+                if (dto.PaymentMethod == "VodafoneCash" && proof != null)
+                {
+                    // Fallback if WebRootPath is null (no wwwroot folder)
+                    var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                    var uploadsDir = Path.Combine(webRoot, "proofs");
+
+                    if (!Directory.Exists(uploadsDir))
+                        Directory.CreateDirectory(uploadsDir);
+
+                    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(proof.FileName)}";
+                    var filePath = Path.Combine(uploadsDir, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await proof.CopyToAsync(stream);
+                    }
+
+                    proofPath = "/proofs/" + fileName;
+                }
+
+                // 6. Record the payment
+                var payment = new Payment
+                {
+                    OrderID = order.OrderID,
+                    AmountPaid = total,
+                    PaymentMethod = dto.PaymentMethod,
+                    PaymentDate = DateTime.Now,
+                    Status = dto.PaymentMethod == "VodafoneCash"
+                        ? "Pending Verification"
+                        : "Awaiting Payment",
+                    ProofImagePath = proofPath
+                };
+
+                _context.Payments.Add(payment);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+                return order;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception(ex.Message);
+            }
+        }
+    }
+}
+</file>
+
+<file path="Repo/OwnerRepo.cs">
+using Agrisky.Models;
+using AgriskyApi.Dtos;
+using AgriskyApi.IRepo;
+using Microsoft.EntityFrameworkCore;
+
+namespace AgriskyApi.Repo
+{
+    public class OwnerRepo : GenricRepo<Owner>, IOwnerRepo
+    {
+        private readonly AppDbcontext _context;
+
+        public OwnerRepo(AppDbcontext context):base(context) 
+        {
+            _context = context;
+        }
+
+        public async Task<DashboardDto> GetDashboardData()
+        {
+            var today = DateTime.Today;
+            var startOfMonth = new DateTime(today.Year, today.Month, 1);
+
+            var totalSalesToday = await _context.Orders
+                .Where(o => o.OrderDate.Date == today && o.Status == "Delivered")
+                .SumAsync(o => (decimal?)o.TotalAmount) ?? 0;
+
+            var totalSalesMonth = await _context.Orders
+                .Where(o => o.OrderDate >= startOfMonth && o.Status == "Delivered")
+                .SumAsync(o => (decimal?)o.TotalAmount) ?? 0;
+
+            var totalSoldProducts = await _context.OrderItems
+                .Where(oi => oi.Order.Status == "Delivered")
+                .SumAsync(oi => (int?)oi.Quantity) ?? 0;
+
+            var totalCancelledOrders = await _context.Orders
+                .CountAsync(o => o.Status == "Cancelled");
+
+            var bestSelling = await _context.OrderItems
+                .GroupBy(oi => oi.ProductID)
+                .Select(g => new
+                {
+                    Name = g.First().Product.Name,
+                    Qty = g.Sum(x => x.Quantity)
+                })
+                .OrderByDescending(x => x.Qty)
+                .FirstOrDefaultAsync();
+
+            var worstSelling = await _context.OrderItems
+                .GroupBy(oi => oi.ProductID)
+                .Select(g => new
+                {
+                    Name = g.First().Product.Name,
+                    Qty = g.Sum(x => x.Quantity)
+                })
+                .OrderBy(x => x.Qty)
+                .FirstOrDefaultAsync();
+
+            var messages = await _context.ContactMessages
+                .OrderByDescending(m => m.SubmittedAt)
+                .Take(5)
+                .Select(m => new ContactMessageDto
+                {
+                    Id = m.Id,
+                    Email = m.Email,
+                    Message = m.Message,
+                    SubmittedAt = m.SubmittedAt
+                }).ToListAsync();
+
+            var feedbacks = await _context.Feedbacks
+                .Include(f => f.Product)
+                .Include(f => f.User)
+                .OrderByDescending(f => f.DateSubmitted)
+                .Take(5)
+                .Select(f => new FeedbackDto
+                {
+                    UserName = f.User.FirstName,
+                    ProductName = f.Product.Name,
+                    Comment = f.Comment,
+                    DateSubmitted = f.DateSubmitted
+                }).ToListAsync();
+
+            return new DashboardDto
+            {
+                TotalSalesToday = totalSalesToday,
+                TotalSalesMonth = totalSalesMonth,
+                TotalSoldProducts = totalSoldProducts,
+                CancelledOrdersCount = totalCancelledOrders,
+                BestSellingProduct = bestSelling?.Name ?? "N/A",
+                BestSellingQuantity = bestSelling?.Qty ?? 0,
+                WorstSellingProduct = worstSelling?.Name ?? "N/A",
+                WorstSellingQuantity = worstSelling?.Qty ?? 0,
+                LatestMessages = messages,
+                LatestFeedbacks = feedbacks
+            };
+        }
+
+        public async Task<IEnumerable<OwnerOrderDto>> GetOrders()
+        {
+            return await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.Payment)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                .Where(o => !o.IsDeleted)
+                .OrderByDescending(o => o.OrderDate)
+                .Select(o => new OwnerOrderDto
+                {
+                    OrderID = o.OrderID,
+                    UserName = o.User.FirstName,
+                    TotalAmount = o.TotalAmount,
+                    PaymentMethod = o.Payment.PaymentMethod,
+                    Status = o.Status,
+                    OrderDate = o.OrderDate,
+                    Items = o.OrderItems.Select(i => new OrderItemDetailsDto
+                    {
+                        ProductName = i.Product.Name,
+                        Quantity = i.Quantity,
+                        Price = i.Price
+                    }).ToList()
+                }).ToListAsync();
+        }
+
+        public async Task<bool> DeleteMessage(int messageId)
+        {
+            var message = await _context.ContactMessages.FindAsync(messageId);
+            if (message == null) return false;
+
+            _context.ContactMessages.Remove(message);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<string> GetProofImage(int orderId)
+        {
+            var payment = await _context.Payments
+                .FirstOrDefaultAsync(p => p.OrderID == orderId);
+
+            return payment?.ProofImagePath;
+        }
+    }
+}
+</file>
+
+<file path="Repo/ProductRepo.cs">
+using Agrisky.Models;
+using AgriskyApi.IRepo;
+using Microsoft.EntityFrameworkCore;
+
+namespace AgriskyApi.Repo
+{
+    public class ProductRepo : GenricRepo<Product>, IProductRepo
+    {
+        public ProductRepo(AppDbcontext context) : base(context)
+        {
+        }
+        public async Task<IEnumerable<Product>> GetAllWithFilter(string search, int? categoryId)
+        {
+            var query = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductImages)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+                query = query.Where(p => p.Name.Contains(search));
+
+            if (categoryId.HasValue)
+                query = query.Where(p => p.CategoryID == categoryId);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<Product> GetWithImages(int id)
+        {
+            return await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductImages)
+                .FirstOrDefaultAsync(p => p.ProductID == id);
+        }
+    }
+}
+</file>
+
+<file path="Repo/UserRepo.cs">
+using Agrisky.Models;
+using AgriskyApi.Dtos;
+using AgriskyApi.IRepo;
+using Microsoft.EntityFrameworkCore;
+
+namespace AgriskyApi.Repo
+{
+    public class UserRepo : GenricRepo<User>, IUserRepo
+    {
+        public UserRepo(AppDbcontext context) : base(context)
+        {
+        }
+
+        public async Task<IEnumerable<ProductDto>> GetProducts(int? categoryId, string search)
+        {
+            var query = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductImages)
+                .AsQueryable();
+
+            if (categoryId.HasValue)
+                query = query.Where(p => p.CategoryID == categoryId);
+
+            if (!string.IsNullOrEmpty(search))
+                query = query.Where(p => p.Name.Contains(search));
+
+            return await query.Select(p => new ProductDto
+            {
+                ProductID = p.ProductID,
+                Name = p.Name,
+                Price = p.Price,
+                CategoryName = p.Category.Name,
+                Images = p.ProductImages.Select(i => i.ImageURL).ToList()
+            }).ToListAsync();
+        }
+
+        public async Task<bool> AddToCart(int userId, AddToCartDto dto)
+        {
+            var product = await _context.Products.FindAsync(dto.ProductId);
+            if (product == null || dto.Quantity > product.StockQuantity)
+                return false;
+
+            var cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == userId);
+            if (cart == null)
+            {
+                cart = new Cart { UserId = userId };
+                await _context.Carts.AddAsync(cart);
+                await _context.SaveChangesAsync();
+            }
+
+            var item = await _context.CartItems
+                .FirstOrDefaultAsync(ci => ci.CartId == cart.CartId && ci.ProductId == dto.ProductId);
+
+            if (item != null)
+                item.Quantity += dto.Quantity;
+            else
+            {
+                item = new CartItem
+                {
+                    CartId = cart.CartId,
+                    ProductId = dto.ProductId,
+                    Quantity = dto.Quantity
+                };
+                await _context.CartItems.AddAsync(item);
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<IEnumerable<CartItemDto>> GetCart(int userId)
+        {
+            var cart = await _context.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(ci => ci.Product)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if (cart == null) return new List<CartItemDto>();
+
+            return cart.CartItems.Select(ci => new CartItemDto
+            {
+                ProductId = ci.ProductId,
+                ProductName = ci.Product.Name,
+                Quantity = ci.Quantity,
+                Price = ci.Product.Price
+            }).ToList();
+        }
+
+        public async Task<bool> SendMessage(ContactDto dto)
+        {
+            var msg = new ContactMessage
+            {
+                Name = dto.Name,
+                Email = dto.Email,
+                Message = dto.Message
+            };
+
+            await _context.ContactMessages.AddAsync(msg);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<IEnumerable<OrderDto>> GetUserOrders(int userId)
+        {
+            return await _context.Orders
+                .Where(o => o.UserID == userId && !o.IsDeleted)
+                .OrderByDescending(o => o.OrderDate)
+                .Select(o => new OrderDto
+                {
+                    OrderID = o.OrderID,
+                    OrderDate = o.OrderDate,
+                    Status = o.Status,
+                    TotalAmount = o.TotalAmount
+                }).ToListAsync();
+        }
+
+        public async Task<bool> RegisterUserAsync(User user)
+        {
+            var exists = await _context.Users.AnyAsync(u => u.Email == user.Email);
+            if (exists) return false;
+
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
+
+        // NEW ─────────────────────────────────────────────────────────────────
+        public async Task UpdateUserAsync(User user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+        }
+    }
+}
+</file>
+
+<file path="Services/IJwtServices.cs">
+using Agrisky.Models;
+
+namespace AgriskyApi.Services
+{
+    public interface IJwtServices
+    {
+        string GenerateToken(User user);
+
+    }
+}
+</file>
+
+<file path="Services/Implementation/JwtServices.cs">
+using Agrisky.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
+namespace AgriskyApi.Services.Implementation
+{
+    public class JwtService : IJwtServices
+    {
+        private readonly IConfiguration _configuration;
+
+        public JwtService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        public string GenerateToken(User user)
+        {
+            var jwtSettings = _configuration.GetSection("Jwt");
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtSettings["Key"]!));
+
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role),
+                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}")
+            };
+
+            var duration = int.Parse(jwtSettings["DurationInMinutes"]!);
+
+            var token = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(duration),
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+    }
+}
+</file>
+
+<file path="Dtos/ProductDto.cs">
+namespace AgriskyApi.Dtos
+{
+    public class ProductDto
+    {
+        public int ProductID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+        public int StockQuantity { get; set; }
+        public string CategoryName { get; set; }
+        public List<string> Images { get; set; }
+    }
+    public class CreateProductDto
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+        public int StockQuantity { get; set; }
+        public int CategoryID { get; set; }
+    }
+    public class UpdateProductDto
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+        public int StockQuantity { get; set; }
+        public int CategoryID { get; set; }
+        //
+    }
+}
+</file>
+
+</files>

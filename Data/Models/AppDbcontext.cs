@@ -25,8 +25,6 @@ namespace Agrisky.Models
         {
             base.OnModelCreating(modelBuilder);
 
-
- 
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
@@ -39,7 +37,6 @@ namespace Agrisky.Models
                 .HasIndex(ci => new { ci.CartId, ci.ProductId })
                 .IsUnique();
 
-      
 
             modelBuilder.Entity<Product>()
                 .HasOne(p => p.Category)
@@ -113,21 +110,20 @@ namespace Agrisky.Models
                 .HasForeignKey(ci => ci.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
                     Id = 1,
                     FirstName = "Admin",
-                    LastName = "User",
-                    Email = "admin@agrisky.com",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
-                    PhoneNumber = "01000000000",
-                    Address = "Admin Address",
-                    Role = "Admin"
+                    LastName = "AgriSky",
+                    Email = "admin@agrisky.app",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@AgriSky2024"),
+                    Role = "Admin",
+                    IsActive = true
                 }
             );
 
-            
             modelBuilder.Entity<Category>().HasData(
                 new Category { CategoryID = 1, Name = "Crops", Icon = "bi-flower1" },
                 new Category { CategoryID = 2, Name = "Fruits & Vegetables", Icon = "fa-solid fa-apple-whole" },

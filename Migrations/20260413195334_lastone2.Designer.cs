@@ -4,6 +4,7 @@ using Agrisky.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgriskyApi.Migrations
 {
     [DbContext(typeof(AppDbcontext))]
-    partial class AppDbcontextModelSnapshot : ModelSnapshot
+    [Migration("20260413195334_lastone2")]
+    partial class lastone2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,12 +246,6 @@ namespace AgriskyApi.Migrations
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
@@ -337,9 +334,6 @@ namespace AgriskyApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"));
 
-                    b.Property<string>("AdminNote")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("AmountPaid")
                         .HasColumnType("decimal(18,2)");
 
@@ -354,13 +348,11 @@ namespace AgriskyApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProofImagePath")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TransactionReference")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PaymentID");
@@ -521,12 +513,6 @@ namespace AgriskyApi.Migrations
                     b.Property<string>("ProfilePicture")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("RefreshTokenExpiryDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -545,12 +531,14 @@ namespace AgriskyApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 4, 21, 18, 41, 18, 188, DateTimeKind.Utc).AddTicks(2000),
-                            Email = "admin@agrisky.app",
+                            Address = "Admin Address",
+                            CreatedAt = new DateTime(2026, 4, 13, 19, 53, 34, 236, DateTimeKind.Utc).AddTicks(8375),
+                            Email = "admin@agrisky.com",
                             FirstName = "Admin",
                             IsActive = true,
-                            LastName = "AgriSky",
-                            PasswordHash = "$2a$11$zV7YR3qkEQQC6DZvUQzdcuTQ9x3uhy6eDfjTNTjIwygofXHZ/qEAW",
+                            LastName = "User",
+                            PasswordHash = "$2a$11$wPlPOmnM0KotIniqI15AFeuxW1WVoIBGxj8lC/WN8CuG2uW6mtLE.",
+                            PhoneNumber = "01000000000",
                             Role = "Admin"
                         });
                 });
@@ -706,7 +694,8 @@ namespace AgriskyApi.Migrations
                 {
                     b.Navigation("OrderItems");
 
-                    b.Navigation("Payment");
+                    b.Navigation("Payment")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Agrisky.Models.Owner", b =>

@@ -1,26 +1,54 @@
 ﻿using Agrisky.Models;
 using AgriskyApi.Dtos;
 using AgriskyApi.IRepo;
+using AgriskyApi.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace AgriskyApi.Repo
 {
     public class OrderRepo : GenricRepo<Order>, IOrderRepo
     {
-        private readonly IWebHostEnvironment _env;
+        private readonly IFileValidationService _fileValidation;
+        private readonly ILogger<OrderRepo> _logger;
 
-        public OrderRepo(AppDbcontext context, IWebHostEnvironment env) : base(context)
+        public OrderRepo(
+            AppDbcontext context,
+            IFileValidationService fileValidation,
+            ILogger<OrderRepo> logger) : base(context)
         {
-            _env = env;
+            _fileValidation = fileValidation;
+            _logger = logger;
         }
 
         public async Task<Order> CreateOrder(CreateOrderDto dto, IFormFile? proof)
         {
+            // ── dto.UserId is always JWT-sourced (set by the controller) ──────
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                // 1. Update or create shipping info
-                var shipping = await _context.Shippings.FirstOrDefaultAsync(s => s.UserID == dto.UserId);
+                // 1. Validate payment method whitelist
+                var allowedMethods = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                    { "VodafoneCash", "CashOnDelivery" };
+
+                if (!allowedMethods.Contains(dto.PaymentMethod))
+                    throw new InvalidOperationException("Invalid payment method.");
+
+                // 2. Validate VodafoneCash transaction ID format
+                if (dto.PaymentMethod.Equals("VodafoneCash", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (string.IsNullOrWhiteSpace(dto.VodafoneCashTransactionId) ||
+                        !Regex.IsMatch(dto.VodafoneCashTransactionId, @"^\d{10,20}$"))
+                    {
+                        throw new InvalidOperationException(
+                            "A valid VodafoneCash transaction ID (10–20 digits) is required.");
+                    }
+                }
+
+                // 3. Shipping upsert
+                var shipping = await _context.Shippings
+                    .FirstOrDefaultAsync(s => s.UserID == dto.UserId);
+
                 if (shipping != null)
                 {
                     shipping.Address = dto.Shipping.Address;
@@ -44,42 +72,43 @@ namespace AgriskyApi.Repo
                 }
                 await _context.SaveChangesAsync();
 
-                // 2. Validate products and stock
-                var productIds = dto.Items.Select(i => i.ProductId).ToList();
+                // 4. Load products server-side — prices are NEVER taken from the client
+                var productIds = dto.Items.Select(i => i.ProductId).Distinct().ToList();
                 var products = await _context.Products
                     .Where(p => productIds.Contains(p.ProductID))
                     .ToListAsync();
 
-                decimal subtotal = 0;
+                decimal subtotal = 0m;
                 foreach (var item in dto.Items)
                 {
-                    var product = products.FirstOrDefault(p => p.ProductID == item.ProductId);
-                    if (product == null)
-                        throw new Exception($"المنتج رقم {item.ProductId} غير موجود.");
+                    var product = products.FirstOrDefault(p => p.ProductID == item.ProductId)
+                        ?? throw new InvalidOperationException(
+                               $"Product {item.ProductId} not found.");
+
                     if (product.StockQuantity < item.Quantity)
-                        throw new Exception($"المخزون غير كافٍ للمنتج: {product.Name}");
+                        throw new InvalidOperationException(
+                            $"Insufficient stock for: {product.Name}");
 
                     subtotal += product.Price * item.Quantity;
                 }
 
-                // 3. Create the order (subtotal + fixed shipping fee)
-                decimal total = subtotal + 7.7m;
+                // 5. Create the order — Status and TotalAmount are server-set
+                const decimal shippingFee = 7.70m;
                 var order = new Order
                 {
                     UserID = dto.UserId,
                     ShippingID = shipping.ShippingID,
-                    TotalAmount = total,
-                    OrderDate = DateTime.Now,
+                    TotalAmount = subtotal + shippingFee,
+                    OrderDate = DateTime.UtcNow,
                     Status = "Pending",
                     PaymentMethod = dto.PaymentMethod,
-                    IsDeleted = false,
                     IsSeenByAdmin = false
                 };
 
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
 
-                // 4. Add order items and reduce stock
+                // 6. Create order items and deduct stock
                 foreach (var item in dto.Items)
                 {
                     var product = products.First(p => p.ProductID == item.ProductId);
@@ -88,43 +117,33 @@ namespace AgriskyApi.Repo
                         OrderID = order.OrderID,
                         ProductID = product.ProductID,
                         Quantity = item.Quantity,
-                        Price = product.Price
+                        Price = product.Price   // server price, never client price
                     });
                     product.StockQuantity -= item.Quantity;
                 }
 
-                // 5. Handle payment proof (VodafoneCash only)
-                string proofPath = string.Empty;
-                if (dto.PaymentMethod == "VodafoneCash" && proof != null)
+                // 7. Save proof image (validated via IFileValidationService)
+                string? proofPath = null;
+                if (dto.PaymentMethod.Equals("VodafoneCash", StringComparison.OrdinalIgnoreCase)
+                    && proof != null)
                 {
-                    // Fallback if WebRootPath is null (no wwwroot folder)
-                    var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                    var uploadsDir = Path.Combine(webRoot, "proofs");
-
-                    if (!Directory.Exists(uploadsDir))
-                        Directory.CreateDirectory(uploadsDir);
-
-                    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(proof.FileName)}";
-                    var filePath = Path.Combine(uploadsDir, fileName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await proof.CopyToAsync(stream);
-                    }
-
-                    proofPath = "/proofs/" + fileName;
+                    // SaveProofAsync validates file AND saves outside wwwroot
+                    proofPath = await _fileValidation.SaveProofAsync(proof, order.OrderID);
                 }
 
-                // 6. Record the payment
+                // 8. Create Payment record — Status always server-determined
+                var paymentStatus = dto.PaymentMethod.Equals("VodafoneCash", StringComparison.OrdinalIgnoreCase)
+                    ? PaymentStatus.PendingVerification
+                    : PaymentStatus.AwaitingPayment;
+
                 var payment = new Payment
                 {
                     OrderID = order.OrderID,
-                    AmountPaid = total,
+                    AmountPaid = order.TotalAmount,
                     PaymentMethod = dto.PaymentMethod,
-                    PaymentDate = DateTime.Now,
-                    Status = dto.PaymentMethod == "VodafoneCash"
-                        ? "Pending Verification"
-                        : "Awaiting Payment",
+                    PaymentDate = DateTime.UtcNow,
+                    Status = paymentStatus.ToString(),
+                    TransactionReference = dto.VodafoneCashTransactionId,
                     ProofImagePath = proofPath
                 };
 
@@ -132,13 +151,57 @@ namespace AgriskyApi.Repo
                 await _context.SaveChangesAsync();
 
                 await transaction.CommitAsync();
+
+                _logger.LogInformation(
+                    "Order {OrderId} created for user {UserId} — method: {Method} — total: {Total}",
+                    order.OrderID, dto.UserId, dto.PaymentMethod, order.TotalAmount);
+
                 return order;
             }
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                throw new Exception(ex.Message);
+                _logger.LogError(ex, "Order creation failed for user {UserId}", dto.UserId);
+                throw;
             }
+        }
+
+        // ── Admin: approve or reject a payment proof ──────────────────────────
+        public async Task<bool> VerifyPayment(
+            int orderId, bool approve, string? adminNote, string adminEmail)
+        {
+            var payment = await _context.Payments
+                .FirstOrDefaultAsync(p => p.OrderID == orderId);
+
+            if (payment == null) return false;
+
+            // Only allow verification on PendingVerification payments
+            if (payment.Status != PaymentStatus.PendingVerification.ToString())
+                return false;
+
+            payment.Status = approve
+                ? PaymentStatus.Paid.ToString()
+                : PaymentStatus.Rejected.ToString();
+            payment.AdminNote = adminNote;
+
+            if (approve)
+            {
+                var order = await _context.Orders.FindAsync(orderId);
+                if (order != null)
+                {
+                    order.Status = "Processing";
+                    order.UpdatedAt = DateTime.UtcNow;
+                    order.UpdatedBy = adminEmail;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation(
+                "Payment for order {OrderId} {Action} by {Admin}",
+                orderId, approve ? "approved" : "rejected", adminEmail);
+
+            return true;
         }
     }
 }
